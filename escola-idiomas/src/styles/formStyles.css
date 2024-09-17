@@ -1,0 +1,62 @@
+/* Form container */
+.form-container {
+    max-width: 400px; /* Reduzida a largura máxima */
+    margin: 0 auto;
+    padding: 15px; /* Padding reduzido */
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Label */
+.form-container label {
+    font-weight: bold;
+    margin-bottom: 5px; /* Reduzido o espaçamento inferior */
+    display: block;
+    color: #333;
+    font-size: 0.9rem; /* Texto ligeiramente menor */
+}
+
+/* Input fields */
+.form-container input[type="text"],
+.form-container select {
+    width: 100%;
+    padding: 8px; /* Reduzido o padding */
+    margin-bottom: 10px; /* Reduzido o espaçamento inferior */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem; /* Fonte menor */
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+}
+
+.form-container input:focus,
+.form-container select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Button */
+.form-container button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px; /* Padding menor */
+    font-size: 0.9rem; /* Fonte menor */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+    background-color: #45a049;
+}
+
+/* Error messages */
+.form-container p.error-message {
+    color: red;
+    font-size: 0.8rem; /* Texto menor para a mensagem de erro */
+    margin-top: -8px;
+    margin-bottom: 10px;
+}
