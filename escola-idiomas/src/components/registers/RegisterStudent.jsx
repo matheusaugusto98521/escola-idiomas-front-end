@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useClasses from "../../hooks/class/GetClasses";
 import '../../styles/formStyles.css';
 import Header from "../Header";
 
-function RegisterStudent(){
+function RegisterStudent() {
     const API_URL = 'http://localhost:8080/student/register?idClass=';
-    const { classes, error: errorClasses} = useClasses();
+    const { classes, error: errorClasses } = useClasses();
     const [idClass, setIdClass] = useState('');
+    const navigate = useNavigate();
     const [student, setStudent] = useState({
         id: '',
         name: '',
@@ -17,14 +19,14 @@ function RegisterStudent(){
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setStudent({ ...student, [name] : value});
+        setStudent({ ...student, [name]: value });
     };
 
     const handleSetIdClassChange = (e) => {
         setIdClass(e.target.value);
     };
 
-    const handleRegisterStudent = async(e) => {
+    const handleRegisterStudent = async (e) => {
         e.preventDefault();
         try {
             const response = await fetch(API_URL + idClass, {
@@ -35,7 +37,7 @@ function RegisterStudent(){
                 body: JSON.stringify(student)
             });
 
-            if(response.ok){
+            if (response.ok) {
                 const data = response.json();
                 setStudent({
                     id: '',
@@ -45,7 +47,8 @@ function RegisterStudent(){
                     cpf: ''
                 });
                 console.log("Aluno criado: ", data);
-            }else{
+                navigate('/student/');
+            } else {
                 console.log("Erro ao criar aluno: ", response.status);
             }
         } catch (error) {
@@ -53,7 +56,7 @@ function RegisterStudent(){
         }
     };
 
-    return(
+    return (
         <>
             <Header />
             <div className="form-container">
@@ -91,7 +94,7 @@ function RegisterStudent(){
                         type="text"
                         name="cpf"
                         id="cpf"
-                        value = {student.cpf}
+                        value={student.cpf}
                         onChange={handleChange}
                     />
 

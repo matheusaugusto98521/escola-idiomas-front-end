@@ -1,3 +1,10 @@
+#homepage {
+    background: url('https://www.aulaformacionsuperior.com/images/easyblog_articles/137/b2ap3_large_cursos-ingles-gratis.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+}
+
 .header {
     background-color: #333;
     padding: 10px 20px;
@@ -5,7 +12,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: nowrap; /* Garantir que os itens não quebrem para linha de baixo */
+    flex-wrap: nowrap;
+    /* Garantir que os itens não quebrem para linha de baixo */
 }
 
 .navbar {
@@ -13,7 +21,8 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    flex-shrink: 1; /* Permite que a navbar diminua conforme necessário */
+    flex-shrink: 1;
+    /* Permite que a navbar diminua conforme necessário */
 }
 
 .nav-list {
@@ -22,7 +31,8 @@
     gap: 20px;
     padding: 0;
     margin: 0;
-    flex-shrink: 1; /* Permite que os itens da lista diminuam conforme a tela */
+    flex-shrink: 1;
+    /* Permite que os itens da lista diminuam conforme a tela */
 }
 
 .nav-item a {
@@ -32,7 +42,8 @@
     padding: 8px 15px;
     transition: background-color 0.3s ease;
     border-radius: 4px;
-    white-space: nowrap; /* Garante que os itens do menu não quebrem para a linha seguinte */
+    white-space: nowrap;
+    /* Garante que os itens do menu não quebrem para a linha seguinte */
 }
 
 .nav-item a:hover {
@@ -41,7 +52,8 @@
 
 /* Quando o botão existir */
 .header.has-button {
-    justify-content: space-between; /* Alinha a navegação à esquerda e o botão à direita */
+    justify-content: space-between;
+    /* Alinha a navegação à esquerda e o botão à direita */
 }
 
 .header-button {
@@ -65,7 +77,8 @@
 }
 
 .menu-toggle {
-    display: none; /* Escondido em telas maiores */
+    display: none;
+    /* Escondido em telas maiores */
     background: none;
     border: none;
     color: white;
@@ -77,22 +90,30 @@
 .container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza horizontalmente */
-    justify-content: center; /* Centraliza verticalmente, se necessário */
-    min-height: 100vh; /* Ocupa toda a altura da tela */
-    padding: 5px; /* Adiciona padding em torno do conteúdo */
+    align-items: center;
+    /* Centraliza horizontalmente */
+    justify-content: center;
+    /* Centraliza verticalmente, se necessário */
+    min-height: 100vh;
+    /* Ocupa toda a altura da tela */
+    padding: 5px;
+    /* Adiciona padding em torno do conteúdo */
 }
 
 /* Estilos para o conteúdo */
 .content {
-    text-align: center; /* Centraliza o texto dentro da div */
-    max-width: 800px; /* Define a largura máxima do conteúdo */
-    margin: 0 auto; /* Centraliza horizontalmente */
+    text-align: center;
+    /* Centraliza o texto dentro da div */
+    max-width: 800px;
+    /* Define a largura máxima do conteúdo */
+    margin: 0 auto;
+    /* Centraliza horizontalmente */
 }
 
 /* Lista de classes */
-.list{
+.list {
     text-align: center;
+
 }
 
 .list ul {
@@ -102,8 +123,10 @@
 }
 
 .item {
-    display: block; /* Força a turma a ocupar toda a linha */
-    width: 100%;    /* Ocupa toda a largura */
+    display: block;
+    /* Força a turma a ocupar toda a linha */
+    width: 100%;
+    /* Ocupa toda a largura */
     margin-bottom: 20px;
     align-items: center;
     padding: 10px;
@@ -111,10 +134,10 @@
     text-align: center;
 }
 
-.list ul span{
+.list ul span {
     margin-top: 5%;
     margin-left: 5%;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .actions {
@@ -122,7 +145,11 @@
     gap: 10px;
 }
 
-.btn-add, .btn-delete, .btn-update, .btn-view, .btn-submit {
+.btn-add,
+.btn-delete,
+.btn-update,
+.btn-view,
+.btn-submit {
     padding: 5px 10px;
     border: none;
     background-color: #007bff;
@@ -273,7 +300,8 @@
 
 @media (max-width: 600px) {
     .nav-list {
-        display: none; /* Esconde os itens da lista por padrão */
+        display: none;
+        /* Esconde os itens da lista por padrão */
         flex-direction: column;
         gap: 10px;
         width: 100%;
@@ -285,7 +313,8 @@
     }
 
     .nav-list.open {
-        display: flex; /* Mostra a lista quando o menu estiver aberto */
+        display: flex;
+        /* Mostra a lista quando o menu estiver aberto */
     }
 
     .nav-item a {
@@ -314,7 +343,8 @@
 /* Escondendo o botão de menu em telas maiores */
 @media (min-width: 601px) {
     .menu-toggle {
-        display: none; /* O botão de menu não aparece em telas maiores */
+        display: none;
+        /* O botão de menu não aparece em telas maiores */
     }
 }
 
@@ -327,16 +357,27 @@
     cursor: pointer;
     font-size: 1.2rem;
     font-weight: bold;
-    position: absolute; /* Posição no canto superior direito */
+    position: absolute;
+    /* Posição no canto superior direito */
     top: 10px;
     right: 10px;
     line-height: 1;
 }
 
 #close:hover {
-    background-color: #ff1c1c; /* Mudança de cor ao passar o mouse */
+    background-color: #ff1c1c;
+    /* Mudança de cor ao passar o mouse */
 }
 
 #close:focus {
-    outline: none; /* Remove o contorno ao focar */
+    outline: none;
+    /* Remove o contorno ao focar */
+}
+
+.card {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
 }

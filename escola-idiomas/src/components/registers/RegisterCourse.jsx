@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import '../../styles/formStyles.css';
 import Header from "../Header";
 
-function RegisterCourse(){
+function RegisterCourse() {
 
     const API_URL = 'http://localhost:8080/course/register';
     const [error, setError] = useState('');
+    const navigate = useNavigate();
     const [course, setCourse] = useState({
         id: '',
         description: '',
@@ -14,21 +16,21 @@ function RegisterCourse(){
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setCourse({ ...course, [name] : value});
+        setCourse({ ...course, [name]: value });
     }
 
-    const handleRegisterCourse = async(e) => {
+    const handleRegisterCourse = async (e) => {
         e.preventDefault();
-        try{
+        try {
             const response = await fetch(API_URL, {
                 method: 'POST',
-                headers:{
-                    'Content-Type' : 'application/json'
+                headers: {
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(course),
             });
 
-            if(response.ok){
+            if (response.ok) {
                 const data = await response.json();
                 setCourse({
                     id: '',
@@ -36,19 +38,21 @@ function RegisterCourse(){
                     fullLoad: ''
                 });
                 console.log(data);
-            }else{
+                navigate('/course/');
+
+            } else {
                 const errorText = await response.text();
                 console.error('Erro ao criar novo curso: ', response.status, errorText);
                 setError(`Erro: ${response.status} - ${errorText}`);
             }
 
-        }catch(error){
+        } catch (error) {
             console.error("Erro interno ao criar curso: ", error);
             setError('Erro ao conectar-se ao servidor.');
         }
     };
 
-    return(
+    return (
         <>
             <Header />
             <div className="form-container">

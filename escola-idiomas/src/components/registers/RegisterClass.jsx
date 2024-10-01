@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useCourses from "../../hooks/course/GetCourses";
 import useTeachersByCourse from "../../hooks/course/GetTeachersByCourse";
 import '../../styles/formStyles.css';
 import Header from "../Header";
 
-function RegisterClass(){
+function RegisterClass() {
     const API_URL = 'http://localhost:8080/class/register';
     const [classStudents, setClassStudents] = useState({
         idClass: '',
@@ -12,12 +13,13 @@ function RegisterClass(){
     });
     const [idCourse, setIdCourse] = useState('');
     const [idTeacher, setIdTeacher] = useState('');
-    const { courses, error: errorCourses} = useCourses();
-    const { teachers, error: errorTeachers} = useTeachersByCourse({ idCourse });
+    const { courses, error: errorCourses } = useCourses();
+    const { teachers, error: errorTeachers } = useTeachersByCourse({ idCourse });
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setClassStudents({ ...classStudents, [name] : value });
+        setClassStudents({ ...classStudents, [name]: value });
     };
 
     const handleCourseChange = (e) => {
@@ -29,7 +31,7 @@ function RegisterClass(){
         setIdTeacher(e.target.value);
     };
 
-    const handleRegisterClass = async(e) => {
+    const handleRegisterClass = async (e) => {
         e.preventDefault();
         try {
             const response = await fetch(`${API_URL}?idCourse=${idCourse}&idTeacher=${idTeacher}`, {
@@ -40,14 +42,15 @@ function RegisterClass(){
                 body: JSON.stringify(classStudents)
             });
 
-            if(response.ok){
+            if (response.ok) {
                 const data = response.json();
                 setClassStudents({
                     idClass: '',
                     description: ''
                 });
                 console.log("Turma criada: ", data);
-            }else{
+                navigate('/class/');
+            } else {
                 console.log("Erro ao criar turma: ", response.status);
             }
         } catch (error) {
@@ -55,7 +58,7 @@ function RegisterClass(){
         }
     };
 
-    return(
+    return (
         <>
             <Header />
             <div className="form-container">

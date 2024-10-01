@@ -5,8 +5,9 @@ import '../styles/styles.css';
 import { deleteClass, getClassById, getStudentsByClass, updateClass } from "../utils/class/ClassMethods";
 import ButtonCloseModal from "./ButtonCloseModal";
 import Header from "./Header";
+import Modal from "./modal";
 
-function Classes(){
+function Classes() {
     const navigate = useNavigate();
     const { classes, error, fetchClasses } = useClasses();
     const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
@@ -19,7 +20,7 @@ function Classes(){
     const [selectedClassId, setSelectedClassId] = useState(null);
 
     useEffect(() => {
-        if(idClass){
+        if (idClass) {
             getClassById({ idClass: idClass }).then(response => {
                 setClassStudent(response);
             });
@@ -35,8 +36,13 @@ function Classes(){
         setIsModalUpdateOpen(!isModalUpdateOpen);
     }
 
-    const handleDelete = (idClass) => {
-        deleteClass({ idClass: idClass });
+    const handleDelete = async (idClass) => {
+        try {
+            await deleteClass({ idClass: idClass });
+            await fetchClasses();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleChangeModal = () => {
@@ -56,13 +62,13 @@ function Classes(){
         }));
     };
 
-    const handleUpdateClass = (e) => {
+    const handleUpdateClass = async (e) => {
         e.preventDefault();
         try {
-            const response = updateClass({idClass: idClass, updatedData: classStudent});
+            const response = await updateClass({ idClass: idClass, updatedData: classStudent });
             console.log('Feito: ', response);
-            alert('Curso alterado com sucesso');
-            fetchClasses();
+            await fetchClasses();
+            setIsModalUpdateOpen(false);
         } catch (error) {
             alert('Erro ao atualizar curso: ', error.message);
         }
@@ -71,7 +77,8 @@ function Classes(){
     const handleGetStudents = async (idClass) => {
         getStudentsByClass({ idClass: idClass }).then(response => {
             setStudents(response);
-        })
+            console.log(response);
+        });
     };
 
     const handleShowStudents = (idClass) => {
@@ -82,7 +89,7 @@ function Classes(){
         }
     };
 
-    return(
+    return (
         <>
             <Header button={<button className="btn-add" onClick={() => handleCreate()}>Cadastrar nova turma</button>} />
             <div className="container">
@@ -91,7 +98,9 @@ function Classes(){
                     <ul>
                         {classes.length > 0 ? classes.map(classStudent => (
                             <li key={classStudent.id} className="item">
-                                {classStudent.description}
+                                <div className="card">
+                                    <strong>{classStudent.description}</strong>
+                                </div>
                                 <span className="actions">
                                     <button className="btn-delete" onClick={() => handleDelete(classStudent.id)}>Apagar</button>
                                     <button className="btn-update" onClick={() => handleUpdate(classStudent.id)}>Alterar</button>
@@ -105,7 +114,9 @@ function Classes(){
                                         <ul>
                                             {students.length > 0 ? students.map(student => (
                                                 <li key={student.id} className="student-item">
-                                                    Nome: {student.name} - CPF: {student.cpf}
+                                                    <strong>Nome:</strong> {student.name} <br />
+                                                    <strong>CPF:</strong> {student.cpf} <br />
+                                                    <strong>Idade:</strong> {student.age}
                                                 </li>
                                             )) : (
                                                 <h3 className="error-message">Nenhum aluno encontrado</h3>
@@ -122,26 +133,22 @@ function Classes(){
                     {error && <p className="error-message">{error.message}</p>}
                 </div>
 
-                {isModalUpdateOpen && (
-                    <div className="modal">
-                        <div className="modal-content">
-                        <ButtonCloseModal funcClick={closeModal}/>
-                            <h3>Alterar informações da turma</h3>
-                            <form onSubmit={handleUpdateClass}>
-                                <label htmlFor="description">Descrição: </label>
-                                <input
-                                    type="text"
-                                    name="description"
-                                    id="description"
-                                    value={classStudent.description}
-                                    onChange={handleChange}
-                                />
+                {isModalUpdateOpen && <Modal>
+                    <ButtonCloseModal funcClick={closeModal} />
+                    <h3>Alterar informações da turma</h3>
+                    <form onSubmit={handleUpdateClass}>
+                        <label htmlFor="description">Descrição: </label>
+                        <input
+                            type="text"
+                            name="description"
+                            id="description"
+                            value={classStudent.description}
+                            onChange={handleChange}
+                        />
 
-                                <button className="btn-submit" type="submit">Alterar informações</button>
-                            </form>
-                        </div>
-                    </div>
-                )}
+                        <button className="btn-submit" type="submit">Alterar informações</button>
+                    </form>
+                </Modal>}
             </div>
         </>
     );

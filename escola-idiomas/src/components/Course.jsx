@@ -4,8 +4,9 @@ import useCourses from "../hooks/course/GetCourses";
 import { deleteCourse, getCourseById, updateCourse } from "../utils/course/CourseMethods";
 import ButtonCloseModal from "./ButtonCloseModal";
 import Header from "./Header";
+import Modal from "./modal";
 
-function Course(){
+function Course() {
     const navigate = useNavigate();
     const { courses, error, fetchCourses } = useCourses();
     const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
@@ -17,7 +18,7 @@ function Course(){
     });
 
     useEffect(() => {
-        if(idCourse){
+        if (idCourse) {
             getCourseById({ idCourse: idCourse }).then(response => {
                 setCourse(response);
             });
@@ -32,8 +33,13 @@ function Course(){
         setIsModalUpdateOpen(!isModalUpdateOpen);
     }
 
-    const handleDelete = (idCourse) => {
-        deleteCourse({ idCourse });
+    const handleDelete = async (idCourse) => {
+        try {
+            await deleteCourse({ idCourse });
+            await fetchCourses();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleChangeModal = () => {
@@ -53,20 +59,19 @@ function Course(){
         }));
     };
 
-    const handleUpdateCourse = (e) => {
+    const handleUpdateCourse = async (e) => {
         e.preventDefault();
         try {
-            const response = updateCourse({idCourse: idCourse, updatedData: course});
+            const response = await updateCourse({ idCourse: idCourse, updatedData: course });
             console.log('Feito: ', response);
-            alert('Curso alterado com sucesso');
-            fetchCourses();
+            await fetchCourses();
             setIsModalUpdateOpen(false);
         } catch (error) {
             alert('Erro ao atualizar curso: ', error.message);
         }
     };
 
-    return(
+    return (
         <>
             <Header button={<button className="btn-add" onClick={() => handleCreate()}>Cadastrar novo curso</button>} />
             <div className="container">
@@ -75,7 +80,11 @@ function Course(){
                     <ul>
                         {courses.length > 0 ? courses.map(course => (
                             <li key={course.id} className="item">
-                                {course.description} - {course.fullLoad}
+                                <div className="card">
+                                    <strong>Nome:</strong> {course.description} <br />
+                                    <strong>Carga horária:</strong> {course.fullLoad}
+                                </div>
+
                                 <span className="actions">
                                     <button className="btn-delete" onClick={() => handleDelete(course.id)}>Apagar</button>
                                     <button className="btn-update" onClick={() => handleUpdate(course.id)}>Alterar</button>
@@ -89,35 +98,32 @@ function Course(){
                     {error && <p className="error-message">{error.message}</p>}
                 </div>
 
-                {isModalUpdateOpen && (
-                    <div className="modal">
-                        <div className="modal-content">
-                            <ButtonCloseModal funcClick={closeModal}/>
-                            <h3>Alterar informações do curso</h3>
-                            <form onSubmit={handleUpdateCourse}>
-                                <label htmlFor="description">Descrição: </label>
-                                <input
-                                    type="text"
-                                    name="description"
-                                    id="description"
-                                    value={course.description}
-                                    onChange={handleChange}
-                                />
+                {isModalUpdateOpen && <Modal>
+                    <ButtonCloseModal funcClick={closeModal} />
+                    <h3>Alterar informações do curso</h3>
+                    <form onSubmit={handleUpdateCourse}>
+                        <label htmlFor="description">Descrição: </label>
+                        <input
+                            type="text"
+                            name="description"
+                            id="description"
+                            value={course.description}
+                            onChange={handleChange}
+                        />
 
-                                <label htmlFor="fullLoad">Carga Horária: </label>
-                                <input
-                                    type="text"
-                                    name="fullLoad"
-                                    id="fullLoad"
-                                    value={course.fullLoad}
-                                    onChange={handleChange}
-                                />
+                        <label htmlFor="fullLoad">Carga Horária: </label>
+                        <input
+                            type="text"
+                            name="fullLoad"
+                            id="fullLoad"
+                            value={course.fullLoad}
+                            onChange={handleChange}
+                        />
 
-                                <button className="btn-submit" type="submit">Alterar informações</button>
-                            </form>
-                        </div>
-                    </div>
-                )}
+                        <button className="btn-submit" type="submit">Alterar informações</button>
+                    </form>
+                </Modal>
+                }
             </div>
         </>
     );

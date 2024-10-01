@@ -1,13 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useCourses from "../../hooks/course/GetCourses";
 import '../../styles/formStyles.css';
 import Header from "../Header";
 
-function RegisterTeacher(){
+function RegisterTeacher() {
     const API_URL = 'http://localhost:8080/teacher/register?idCourse=';
     const { courses, error } = useCourses();
     const [idCourse, setIdCourse] = useState('');
     const [errorTeacher, setErrorTeacher] = useState('');
+    const navigate = useNavigate();
     const [teacher, setTeacher] = useState({
         id: '',
         name: '',
@@ -18,18 +20,18 @@ function RegisterTeacher(){
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setTeacher({ ...teacher, [name] : value});
+        setTeacher({ ...teacher, [name]: value });
     }
 
     const handleCourseChange = (e) => {
         setIdCourse(e.target.value);
         console.log("Curso selecionado (id):", e.target.value);
     }
-    
 
-    const handleRegisterTeacher = async(e) => {
+
+    const handleRegisterTeacher = async (e) => {
         e.preventDefault();
-        if(!idCourse){
+        if (!idCourse) {
             setErrorTeacher('Selecione um curso!');
             return;
         }
@@ -43,7 +45,7 @@ function RegisterTeacher(){
                 body: JSON.stringify(teacher)
             });
 
-            if(response.ok){
+            if (response.ok) {
                 const data = response.json();
                 setTeacher({
                     id: '',
@@ -54,7 +56,8 @@ function RegisterTeacher(){
                 });
                 console.log("Professor cadastrado: ", data);
                 setErrorTeacher('');
-            }else{
+                navigate('/teacher/');
+            } else {
                 setErrorTeacher('Erro ao cadastrar professor!');
                 console.error('Erro: ', response.status);
             }
@@ -63,9 +66,9 @@ function RegisterTeacher(){
             console.error('Erro: ', error);
         }
     };
-    
 
-    return(
+
+    return (
         <>
             <Header />
             <div className="form-container">
@@ -121,7 +124,7 @@ function RegisterTeacher(){
                                     {course.description}
                                 </option>
                             ))
-                        ): (
+                        ) : (
                             <option disabled>Carregando cursos....</option>
                         )};
                     </select>
